@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paypal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+      <div class="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
+        <h1 class="text-xl font-extrabold mb-4 text-center text-blue-900">
+          Just Click the button!! <br> Watch Your $100 Disappear 😁
+        </h1>
+        <div id="current-date" class="text-gray-600 text-center mb-6"></div>
+        <div class="mb-6 w-full">
+            <x-paypal amount="100" class="w-full"></x-paypal>
+        </div>
+      </div>
+    </div>
+    <script src="index.js" type="module"></script>
+    <script src="https://custom-element.pages.dev/custom-element.js" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const dateEl = document.getElementById('current-date');
+        const updateDate = () => {
+          const now = new Date();
+          dateEl.textContent = now.toLocaleString(undefined, {
+            dateStyle: 'full',
+            timeStyle: 'medium'
+          });
+        };
+        if (dateEl) {
+          updateDate();
+          setInterval(updateDate, 1000);
+        }
+      });
+    </script>
+</body>
+
+</html>
