@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Your PayPal FastAPI application
+  paypal-app:
+    build: .
+    ports:
+      - "8084:8084"
+    environment:
+      - PAYPAL_CLIENT_ID=${PAYPAL_CLIENT_ID}
+      - PAYPAL_CLIENT_SECRET=${PAYPAL_CLIENT_SECRET}
+      - OTEL_ENDPOINT=${OTEL_ENDPOINT}
+      - ENVIRONMENT=development
+    volumes:
+      - .:/app
+    networks:
+      - paypal-network
+
+  # OpenTelemetry Collector
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.89.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317"   # OTLP gRPC receiver
+      - "4318:4318"   # OTLP HTTP receiver
+    networks:
+      - paypal-network
+
+networks:
+  paypal-network:
+    driver: bridge
